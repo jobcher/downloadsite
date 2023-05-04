@@ -11,6 +11,11 @@ pip install -r requirements.txt
 nohup python app.py &
 ```
 
+2. docker 运行
+```sh
+docker build -t downloadsite .
+```
+
 ## 页面
 - admin 管理员界面
 - edit 编辑界面
