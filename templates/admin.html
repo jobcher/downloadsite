@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>管理界面</title>
+</head>
+<body>
+    <h1>管理界面</h1>
+    <a href="{{ url_for('add') }}">添加软件包</a>
+    <table>
+        <tr>
+            <th>名称</th>
+            <th>描述</th>
+            <th>下载链接</th>
+            <th>上传日期</th>
+            <th>操作</th>
+        </tr>
+        {% for download in downloads %}
+        <tr>
+            <td>{{ download[1] }}</td>
+            <td>{{ download[2] }}</td>
+            <td><a href="{{ download[3] }}">下载链接</a></td>
+            <td>{{ download[4] }}</td>
+            <td>
+                <a href="{{ url_for('edit', id=download[0]) }}">编辑</a>
+                <a href="{{ url_for('delete', id=download[0]) }}">删除</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

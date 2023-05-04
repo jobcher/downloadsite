@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>软件包列表</title>
+</head>
+<body>
+    <h1>软件包列表</h1>
+    <table>
+        <tr>
+            <th>名称</th>
+            <th>描述</th>
+            <th>下载链接</th>
+            <th>上传日期</th>
+        </tr>
+        {% for download in downloads %}
+        <tr>
+            <td>{{ download[1] }}</td>
+            <td>{{ download[2] }}</td>
+            <td><a href="{{ download[3] }}">下载链接</a></td>
+            <td>{{ download[4] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>编辑软件包</title>
+</head>
+<body>
+    <h1>编辑软件包</h1>
+    <form method="post" action="{{ url_for('edit', id=download[0])}}">
+        <label for="name">名称：</label>
+        <input type="text" name="name" value="{{ download[1] }}" required><br>
+        <label for="description">描述：</label>
+        <input type="text" name="description" value="{{ download[2] }}"><br>
+        <label for="download_url">下载链接：</label>
+        <input type="text" name="download_url" value="{{ download[3] }}" required><br>
+        <label for="upload_date">上传日期：</label>
+        <input type="date" name="upload_date" value="{{ download[4] }}" required><br>
+        <input type="submit" value="保存">
+        </form>
+        
+        </body>
+        </html>

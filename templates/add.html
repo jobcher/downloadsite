@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>添加软件包</title>
+</head>
+<body>
+    <h1>添加软件包</h1>
+    <form method="post" action="{{ url_for('add') }}">
+        <label for="name">名称：</label>
+        <input type="text" name="name" required><br>
+        <label for="description">描述：</label>
+        <input type="text" name="description"><br>
+        <label for="download_url">下载链接：</label>
+        <input type="text" name="download_url" required><br>
+        <label for="upload_date">上传日期：</label>
+        <input type="date" name="upload_date" required><br>
+        <input type="submit" value="添加">
+    </form>
+</body>
+</html>
