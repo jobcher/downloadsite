@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,send_from_directory
 import sqlite3
 
 app = Flask(__name__)
@@ -89,6 +89,11 @@ def delete(id):
     conn.commit()
     conn.close()
     return redirect(url_for('admin'))
+
+@app.route('/data/<path:filename>')
+def data(filename):
+    dir = '/app/data'
+    return send_from_directory(dir, filename, as_attachment=True)
 
 # 显示软件包列表
 @app.route('/admin')

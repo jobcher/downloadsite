@@ -7,11 +7,14 @@
     <h1>添加软件包</h1>
     <form method="post" action="{{ url_for('add') }}">
         <label for="name">名称：</label>
-        <input type="text" name="name" required><br>
+        <input type="text" name="name" required style="width: 500px;"><br>
         <label for="description">描述：</label>
-        <input type="text" name="description"><br>
+        <input type="text" name="description" style="width: 500px;"><br>
+        <p>下载链接格式按格式： http://127.0.0.1:8082/data/ + 具体路径<br>
+            例如：<br>
+            http://127.0.0.1:8082/data/输入法安装包-请复制到电脑上双击安装/万能五笔输入法_8.0.exe</p>
         <label for="download_url">下载链接：</label>
-        <input type="text" name="download_url" required><br>
+        <input type="text" name="download_url" required style="width: 500px;"><br>
         <label for="upload_date">上传日期：</label>
         <input type="date" name="upload_date" required><br>
         <input type="submit" value="添加">
