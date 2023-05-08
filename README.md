@@ -16,6 +16,11 @@ nohup python app.py &
 docker build -t downloadsite .
 ```
 
+3. docker-compose 运行
+```sh
+docker-compose up -d
+```
+
 ## 页面
 - admin 管理员界面
 - edit 编辑界面

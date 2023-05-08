@@ -1,39 +1,10 @@
 version: '3'
 services:
-  search-ai01:
-    container_name: search-ai01
-    image: search-ai:v1
-    user: root
+  downloadsite:
+    container_name: downloadsite
+    build:
+      context: .
     ports:
-      - 882:80
-      - 4432:443
-      - 2202:22
+      - 8082:80
     volumes:
-      - ./search-enginer-ai:/opt/search-enginer-ai
-      - ./
-    command: ["python", "/opt/search-enginer-ai/goods_ai_app_server.py"]
-
-  search-ai02:
-    container_name: search-ai02
-    image: search-ai:v1
-    user: root
-    ports:
-      - 883:80
-      - 4433:443
-      - 2203:22
-    volumes:
-      - ./search-enginer-ai:/opt/search-enginer-ai
-    command: ["python", "/opt/search-enginer-ai/goods_ai_app_server.py"]
-
-
-  nginx01:
-    container_name: nginx01
-    image: search-ai:v1
-    user: root
-    ports:
-      - 881:80
-      - 4431:443
-      - 2201:22
-    volumes:
-      - ./search-enginer-ai:/opt/search-enginer-ai
-    command: ["python", "/opt/search-enginer-ai/goods_ai_app_server.py"]
+      - /mnt:/app/data
