@@ -15,6 +15,8 @@
         http://127.0.0.1:8082/data/输入法安装包-请复制到电脑上双击安装/万能五笔输入法_8.0.exe</p>
         <label for="download_url">下载链接：</label>
         <input type="text" name="download_url" value="{{ download[3] }}" required style="width: 500px;"><br>
+        <label for="priority">优先级（数字越大显示越前）：</label>
+        <input type="text" name="priority" value="{{ download[5] }}" required><br>
         <label for="upload_date">上传日期：</label>
         <input type="date" name="upload_date" value="{{ download[4] }}" required><br>
         <input type="submit" value="保存">

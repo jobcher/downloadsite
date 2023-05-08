@@ -11,6 +11,7 @@
             <th>名称</th>
             <th>描述</th>
             <th>下载链接</th>
+            <th>优先级</th>
             <th>上传日期</th>
             <th>操作</th>
         </tr>
@@ -19,6 +20,7 @@
             <td>{{ download[1] }}</td>
             <td>{{ download[2] }}</td>
             <td><a href="{{ download[3] }}">下载链接</a></td>
+            <td>{{ download[5] }}</td>
             <td>{{ download[4] }}</td>
             <td>
                 <a href="{{ url_for('edit', id=download[0]) }}">编辑</a>

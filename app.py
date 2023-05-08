@@ -15,7 +15,8 @@ def create_table():
                 name TEXT NOT NULL,
                 description TEXT,
                 download_url TEXT NOT NULL,
-                upload_date TEXT NOT NULL)''')
+                upload_date TEXT NOT NULL,
+                priority INTEGER DEFAULT 0)''')
     conn.commit()
     conn.close()
 
@@ -29,7 +30,7 @@ def init_db():
 def index():
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    cur.execute('SELECT * FROM downloads')
+    cur.execute('SELECT * FROM downloads ORDER BY priority DESC')
     downloads = cur.fetchall()
     conn.close()
     return render_template('index.html', downloads=downloads)
@@ -42,11 +43,12 @@ def add():
         description = request.form['description']
         download_url = request.form['download_url']
         upload_date = request.form['upload_date']
+        priority = request.form['priority']   # 接收priority
 
         conn = sqlite3.connect(DATABASE)
         cur = conn.cursor()
-        cur.execute('''INSERT INTO downloads(name, description, download_url, upload_date)
-                    VALUES(?, ?, ?, ?)''', (name, description, download_url, upload_date))
+        cur.execute('''INSERT INTO downloads(name, description, download_url, upload_date, priority)
+                    VALUES(?, ?, ?, ?, ?)''', (name, description, download_url, upload_date, priority))
         conn.commit()
         conn.close()
 
@@ -68,11 +70,12 @@ def edit(id):
         description = request.form['description']
         download_url = request.form['download_url']
         upload_date = request.form['upload_date']
+        priority = request.form['priority']
 
         conn = sqlite3.connect(DATABASE)
         cur = conn.cursor()
-        cur.execute('''UPDATE downloads SET name=?, description=?, download_url=?, upload_date=?
-                    WHERE id=?''', (name, description, download_url, upload_date, id))
+        cur.execute('''UPDATE downloads SET name=?, description=?, download_url=?, upload_date=?, priority=?  
+                    WHERE id=?''', (name, description, download_url, upload_date, priority, id))
         conn.commit()
         conn.close()
 
@@ -100,7 +103,7 @@ def data(filename):
 def admin():
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    cur.execute('SELECT * FROM downloads')
+    cur.execute('SELECT * FROM downloads ORDER BY priority DESC')
     downloads = cur.fetchall()
     conn.close()
     return render_template('admin.html', downloads=downloads)
