@@ -5,6 +5,7 @@
     <title>软件包列表</title>
 </head>
 <body>
+    <img src="https://food-report.sanjiang.com/static/img/logo2.5414ae4.png" alt="logo" width="200">
     <h1>软件包列表</h1>
     <table>
         <tr>
@@ -17,10 +18,9 @@
         <tr>
             <td>{{ download[1] }}</td>
             <td>{{ download[2] }}</td>
-            <td><a href="file://193.0.0.16/各类软件安装包/输入法安装包-请复制到电脑上双击安装">下载链接</a></td>
+            <td><a href="{{ download[3] }}">下载链接</a></td>
             <td>{{ download[4] }}</td>
         </tr>
         {% endfor %}
     </table>
 </body>
-</html>
