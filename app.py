@@ -16,7 +16,8 @@ def create_table():
                 description TEXT,
                 download_url TEXT NOT NULL,
                 upload_date TEXT NOT NULL,
-                priority INTEGER DEFAULT 0)''')
+                priority INTEGER DEFAULT 0,
+                category TEXT NOT NULL DEFAULT 0)''')
     conn.commit()
     conn.close()
 
@@ -30,10 +31,15 @@ def init_db():
 def index():
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    cur.execute('SELECT * FROM downloads ORDER BY priority DESC')
+    cur.execute('SELECT * FROM downloads ORDER BY category,priority DESC')
+    categories = {}
     downloads = cur.fetchall()
+    for download in downloads:
+        if download[6] not in categories:  
+            categories[download[6]] = []  
+        categories[download[6]].append(download)
     conn.close()
-    return render_template('index.html', downloads=downloads)
+    return render_template('index.html', categories=categories)
 
 # 添加软件包
 @app.route('/add', methods=['GET', 'POST'])
@@ -44,11 +50,12 @@ def add():
         download_url = request.form['download_url']
         upload_date = request.form['upload_date']
         priority = request.form['priority']   # 接收priority
+        category = request.form['category'] # 分类
 
         conn = sqlite3.connect(DATABASE)
         cur = conn.cursor()
-        cur.execute('''INSERT INTO downloads(name, description, download_url, upload_date, priority)
-                    VALUES(?, ?, ?, ?, ?)''', (name, description, download_url, upload_date, priority))
+        cur.execute('''INSERT INTO downloads(name, description, download_url, upload_date, priority, category)
+                    VALUES(?, ?, ?, ?, ?, ?)''', (name, description, download_url, upload_date, priority, category))
         conn.commit()
         conn.close()
 
@@ -71,11 +78,11 @@ def edit(id):
         download_url = request.form['download_url']
         upload_date = request.form['upload_date']
         priority = request.form['priority']
+        category = request.form['category']
 
         conn = sqlite3.connect(DATABASE)
         cur = conn.cursor()
-        cur.execute('''UPDATE downloads SET name=?, description=?, download_url=?, upload_date=?, priority=?  
-                    WHERE id=?''', (name, description, download_url, upload_date, priority, id))
+        cur.execute('''UPDATE downloads SET name=?, description=?, download_url=?, upload_date=?, priority=?,category=? WHERE id=?''', (name, description, download_url, upload_date, priority, category, id))
         conn.commit()
         conn.close()
 
@@ -103,10 +110,15 @@ def data(filename):
 def admin():
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    cur.execute('SELECT * FROM downloads ORDER BY priority DESC')
+    cur.execute('SELECT * FROM downloads ORDER BY category, priority DESC')
+    categories = {}
     downloads = cur.fetchall()
+    for download in downloads:
+        if download[6] not in categories:  
+            categories[download[6]] = []  
+        categories[download[6]].append(download)
     conn.close()
-    return render_template('admin.html', downloads=downloads)
+    return render_template('admin.html', categories=categories)
 
 if __name__ == '__main__':
     app.run(debug=True,port=80,host='0.0.0.0')

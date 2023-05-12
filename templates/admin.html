@@ -6,6 +6,8 @@
 <body>
     <h1>管理界面</h1>
     <a href="{{ url_for('add') }}">添加软件包</a>
+    {% for category, downloads in categories.items() %}
+    <h2>{{ category }}</h2>
     <table>
         <tr>
             <th>名称</th>
@@ -29,5 +31,6 @@
         </tr>
         {% endfor %}
     </table>
+    {% endfor %}
 </body>
 </html>
