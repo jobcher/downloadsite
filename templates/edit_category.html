@@ -8,30 +8,29 @@
 </head>
 <body>
     <h1>编辑分类</h1>
-    <form action="/edit_category" method="post">
         <table>
             <thead>
                 <tr>
-                    <th scope="col">分类名称</th>
                     <th scope="col">优先级</th>
+                    <th scope="col">操作</th>
                 </tr>
             </thead>
             <tbody>
                 {% for category in categorys %}
-
-                <tr>
-                    <td data-label="分类名称">
-                        <input type="text" class="form-control" id="category_name" name="category_name" value="{{ category[1] }}" readonly>
-                    </td>
-                    <td data-label="优先级">
-                        <input type="text" class="form-control" id="category_id" name="category_id" value="{{ category[2] }}" >
-                    </td>
-
+                <form action="/edit_category" method="post">
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="category_name" name="category_name" value="{{ category[1] }}" readonly>
+                                <input type="text" class="form-control" id="category_id" name="category_id" value="{{ category[2] }}" >
+                            </div>
+                        </td>
+                        <td>
+                            <button type="submit" class="custom-btn btn-11">确认修改</button>
+                        </td>
+                    </tr>
+                </form>
+                {% endfor %}
             </tbody>
-            {% endfor %}
-        </table>
-        <br>
-        <button type="submit" class="custom-btn btn-11">确认修改</button>
-    </form>
 </body>
 </html>

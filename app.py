@@ -119,7 +119,11 @@ def edit_category():
 
         conn = sqlite3.connect(DATABASE)
         cur = conn.cursor()
-        cur.execute('''UPDATE categorys SET category_name=?, category_id=? WHERE category_name=?''', (category_name, category_id, category_name))
+        # 判断分类是否存在
+        cur.execute('SELECT * FROM categorys WHERE category_name=?', (category_name,))
+        row = cur.fetchone()
+        if row is None or category_name == row[1]:
+            cur.execute('''UPDATE categorys SET category_name=?, category_id=? WHERE category_name=?''', (category_name, category_id, category_name))
         conn.commit()
         conn.close()
 

@@ -1,2 +1,1 @@
-flask
-sqlite3
+Flask==2.2.2
