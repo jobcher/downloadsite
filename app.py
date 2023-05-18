@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for,send_from_directory
+from flask import Flask, render_template, request, redirect, url_for,send_from_directory, session
 import sqlite3
 
 app = Flask(__name__)
+app.secret_key = 'secret key'
 
 # 设置数据库名称
 DATABASE = 'downloads.db'
@@ -149,6 +150,8 @@ def data(filename):
 # 显示软件包列表
 @app.route('/admin')
 def admin():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
     cur.execute('SELECT * FROM downloads JOIN categorys ON downloads.category = categorys.category_name ORDER BY categorys.category_id DESC, downloads.priority DESC')
@@ -160,6 +163,29 @@ def admin():
         categories[download[6]].append(download)
     conn.close()
     return render_template('admin.html', categories=categories)
+
+# 登录页面
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+         # 判断用户名和密码是否为空
+        if not username or not password:
+            return render_template('login.html', error='用户名或密码为空')
+        if username == 'admin' and password == 'password':
+            session['logged_in'] = True
+            return redirect(url_for('admin'))
+        else:
+            return render_template('login.html', error='用户名或密码错误')
+    else:
+        return render_template('login.html')
+
+# 退出登录
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True,port=80,host='0.0.0.0')
