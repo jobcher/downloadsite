@@ -2,33 +2,39 @@
 <html>
 <head>
     <title>管理界面</title>
+    <link rel="stylesheet" href="/static/table.css">
 </head>
 <body>
     <h1>管理界面</h1>
-    <a href="{{ url_for('add') }}">添加软件包</a>
+    <a href="{{ url_for('add') }}"><button class="custom-btn btn-11" >添加软件包<div class="dot"></div></button></a>
+    <a href="{{ url_for('edit_category') }}"><button class="custom-btn btn-11" >编辑分类<div class="dot"></div></button></a>
     {% for category, downloads in categories.items() %}
     <h2>{{ category }}</h2>
     <table>
-        <tr>
-            <th>名称</th>
-            <th>描述</th>
-            <th>下载链接</th>
-            <th>优先级</th>
-            <th>上传日期</th>
-            <th>操作</th>
-        </tr>
+        <thead>
+            <tr>
+                <th scope="col">名称</th>
+                <th scope="col">描述</th>
+                <th scope="col">下载链接</th>
+                <th scope="col">优先级</th>
+                <th scope="col">上传日期</th>
+                <th scope="col">操作</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for download in downloads %}
-        <tr>
-            <td>{{ download[1] }}</td>
-            <td>{{ download[2] }}</td>
-            <td><a href="{{ download[3] }}">下载链接</a></td>
-            <td>{{ download[5] }}</td>
-            <td>{{ download[4] }}</td>
-            <td>
-                <a href="{{ url_for('edit', id=download[0]) }}">编辑</a>
-                <a href="{{ url_for('delete', id=download[0]) }}">删除</a>
-            </td>
-        </tr>
+            <tr>
+                <td data-label="名称">{{ download[1] }}</td>
+                <td data-label="描述">{{ download[2] }}</td>
+                <td data-label="下载链接"><a href="{{ download[3] }}">下载链接</a></td>
+                <td data-label="优先级">{{ download[5] }}</td>
+                <td data-label="上传日期">{{ download[4] }}</td>
+                <td data-label="操作">
+                    <a href="{{ url_for('edit', id=download[0]) }}">编辑</a>
+                    <a href="{{ url_for('delete', id=download[0]) }}">删除</a>
+                </td>
+            </tr>
+        </tbody>
         {% endfor %}
     </table>
     {% endfor %}

@@ -8,3 +8,4 @@ services:
       - 8082:80
     volumes:
       - /mnt:/app/data
+      - ./downloads.db:/app/downloads.db

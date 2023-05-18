@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>软件包列表</title>
+    <link rel="stylesheet" href="/static/table.css">
 </head>
 <body>
     <img src="https://food-report.sanjiang.com/static/img/logo2.5414ae4.png" alt="logo" width="200">
@@ -10,19 +11,23 @@
     {% for category, downloads in categories.items() %}
     <h2>{{ category }}</h2>
     <table>
-        <tr>
-            <th>名称</th>
-            <th>描述</th>
-            <th>下载链接</th>
-            <th>上传日期</th>
-        </tr>
+        <thead>
+            <tr>
+                <th scope="col">名称</th>
+                <th scope="col">描述</th>
+                <th scope="col">下载链接</th>
+                <th scope="col">上传日期</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for download in downloads %}
-        <tr>
-            <td>{{ download[1] }}</td>
-            <td>{{ download[2] }}</td>
-            <td><a href="{{ download[3] }}">下载链接</a></td>
-            <td>{{ download[4] }}</td>
-        </tr>
+            <tr>
+                <td data-label="名称">{{ download[1] }}</td>
+                <td data-label="描述">{{ download[2] }}</td>
+                <td data-label="下载链接"><a href="{{ download[3] }}">下载链接</a></td>
+                <td data-label="上传日期">{{ download[4] }}</td>
+            </tr>
+        </tbody>
         {% endfor %}
     </table>
     {% endfor %}

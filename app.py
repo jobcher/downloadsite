@@ -10,6 +10,7 @@ DATABASE = 'downloads.db'
 def create_table():
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
+    #创建数据表
     cur.execute('''CREATE TABLE IF NOT EXISTS downloads
                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
@@ -18,6 +19,11 @@ def create_table():
                 upload_date TEXT NOT NULL,
                 priority INTEGER DEFAULT 0,
                 category TEXT NOT NULL DEFAULT 0)''')
+    #创建分类表
+    cur.execute('''CREATE TABLE IF NOT EXISTS categorys
+                (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                category_name TEXT NOT NULL,
+                category_id INTEGER DEFAULT 0)''')
     conn.commit()
     conn.close()
 
@@ -31,7 +37,7 @@ def init_db():
 def index():
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    cur.execute('SELECT * FROM downloads ORDER BY category,priority DESC')
+    cur.execute('SELECT * FROM downloads JOIN categorys ON downloads.category = categorys.category_name ORDER BY categorys.category_id DESC, downloads.priority DESC')
     categories = {}
     downloads = cur.fetchall()
     for download in downloads:
@@ -56,6 +62,14 @@ def add():
         cur = conn.cursor()
         cur.execute('''INSERT INTO downloads(name, description, download_url, upload_date, priority, category)
                     VALUES(?, ?, ?, ?, ?, ?)''', (name, description, download_url, upload_date, priority, category))
+        #判断分类是否存在
+        cur.execute('SELECT * FROM categorys WHERE category_name=?', (category,))
+        row = cur.fetchone()
+        if row is None:
+            cur.execute('''INSERT INTO categorys(category_name, category_id)
+                        VALUES(?, ?)''', (category, 0))
+        else:
+            pass
         conn.commit()
         conn.close()
 
@@ -89,6 +103,29 @@ def edit(id):
         return redirect(url_for('admin'))
     else:
         return render_template('edit.html', download=download)
+
+# 编辑分类
+@app.route('/edit_category', methods=['GET', 'POST'])
+def edit_category():
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM categorys')
+    categorys = cur.fetchall()
+    conn.close()
+
+    if request.method == 'POST':
+        category_name = request.form['category_name']
+        category_id = request.form['category_id']
+
+        conn = sqlite3.connect(DATABASE)
+        cur = conn.cursor()
+        cur.execute('''UPDATE categorys SET category_name=?, category_id=? WHERE category_name=?''', (category_name, category_id, category_name))
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('admin'))
+    else:
+        return render_template('edit_category.html', categorys=categorys)
     
 # 删除软件包
 @app.route('/delete/<int:id>')
@@ -110,7 +147,7 @@ def data(filename):
 def admin():
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    cur.execute('SELECT * FROM downloads ORDER BY category, priority DESC')
+    cur.execute('SELECT * FROM downloads JOIN categorys ON downloads.category = categorys.category_name ORDER BY categorys.category_id DESC, downloads.priority DESC')
     categories = {}
     downloads = cur.fetchall()
     for download in downloads:
